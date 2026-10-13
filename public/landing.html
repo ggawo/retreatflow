@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetreatFlow — The Operating System for Retreats & Group Programs</title>
+  <meta name="description" content="All-in-one retreat and camp management platform for churches, schools, groups, and retreat centers. Housing matrix, self-check-in kiosk, branded communications, and transparent pricing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #818cf8;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --bg-dark: #090d16;
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --bg-card-hover: rgba(26, 34, 54, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(99, 102, 241, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 35%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(9, 13, 22, 0.8);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text span {
+      color: var(--primary-light);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 70px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #c7d2fe;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      margin: 0 auto 24px;
+      background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 19px;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+
+    .pill-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .pill-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-item span {
+      color: var(--accent);
+    }
+
+    /* Benefits Grid Section */
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .features {
+      padding: 80px 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 32px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-highlight);
+      background: var(--bg-card-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(180deg, rgba(30, 27, 75, 0.8) 0%, rgba(18, 24, 38, 0.95) 100%);
+      border: 2px solid #6366f1;
+      box-shadow: 0 16px 40px rgba(99, 102, 241, 0.25);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .plan-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .plan-target {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      min-height: 38px;
+    }
+
+    .plan-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 46px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .plan-period {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .plan-special-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 28px;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 32px;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .plan-features li span {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .plan-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+    }
+
+    /* Interactive Modal Prompt */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5, 8, 15, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      padding: 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 0;
+      color: #94a3b8;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .modal-plan-pill {
+      background: #1e1b4b;
+      border: 1px solid #4338ca;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-plan-pill strong {
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .modal-plan-pill span {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .modal-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-opt-btn {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .modal-opt-create {
+      background: var(--primary);
+      color: #fff;
+      border: 0;
+    }
+
+    .modal-opt-create:hover {
+      background: var(--primary-hover);
+    }
+
+    .modal-opt-login {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid #334155;
+    }
+
+    .modal-opt-login:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 80px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .faq-item h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .faq-item p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 38px;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="container nav-bar">
+      <a href="#" class="brand">
+        <div class="brand-logo">🌊</div>
+        <div class="brand-text">Retreat<span>Flow</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#benefits">Benefits</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn btn-ghost" onclick="openLoginPrompt('Sign In')">Sign In</button>
+        <button class="btn btn-primary" onclick="openPricingPrompt('Event Pass')">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        The Operating System for Retreats & Group Programs
+      </div>
+
+      <h1>Simplify Every Retreat.<br/>Housing, Registration & Operations in Flow.</h1>
+      
+      <p>
+        Purpose-built for churches, schools, colleagues, and retreat centers. Empower organizers with building-aware housing, self-check-in kiosks, and automated branded communications.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="openPricingPrompt('Event Pass')">
+          ⚡ Explore Plans & Start Free Trial
+        </button>
+        <button class="btn btn-ghost btn-lg" onclick="openLoginPrompt('Sign In')">
+          🚀 Organizer Sign In
+        </button>
+      </div>
+
+      <div class="pill-row">
+        <div class="pill-item"><span>✓</span> Zero Attendee Login Friction</div>
+        <div class="pill-item"><span>✓</span> 60-Day Post-Retreat Grace Window</div>
+        <div class="pill-item"><span>✓</span> 1-Year Read-Only Historical Archive</div>
+        <div class="pill-item"><span>✓</span> Multi-Tenant Custom Co-Branding</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features & Benefits -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title-wrap">
+        <div class="section-tag">Powerful Capabilities</div>
+        <h2 class="section-title">Designed for Real Group Dynamics</h2>
+        <p class="section-subtitle">
+          Retreat planning is notoriously messy with spreadsheets. RetreatFlow orchestrates all operations in one cohesive workspace.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🏢</div>
+          <h3>Housing & Cabin Assignment Matrix</h3>
+          <p>
+            Define camp dorms, cabins, and bed counts. Assign families or individuals with instant visual occupancy bars, accessibility flags, and one-click printable rosters.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Self-Check-in Kiosk & QR Badges</h3>
+          <p>
+            Transform any iPad or tablet into a lightning-fast arrival kiosk. Attendees type their family name or scan their digital QR code badge for instant check-in.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Branded Communications & Merge Tags</h3>
+          <p>
+            Send personalized announcements, payment receipts, packing checklists, and reminders with dynamic placeholders like <code>{{name}}</code>, <code>{{balance}}</code>, and <code>{{dates}}</code>.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💳</div>
+          <h3>Unit Pricing & Balance Tracking</h3>
+          <p>
+            Configure adult vs. child unit fees, deposit deadlines, and automated balance reminders. Reconcile check, cash, and digital payments effortlessly.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">👥</div>
+          <h3>Zero-Friction Participant Onboarding</h3>
+          <p>
+            Participants never need to create a password or log into an account. They receive branded confirmation emails, invoices, and QR passes directly to their inbox.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📜</div>
+          <h3>Lifecycle: 60-Day Grace & 1-Yr Archive</h3>
+          <p>
+            Enjoy full operational access for 60 days post-retreat for financial settlements and survey emails, followed by 1 full year of historical records and signed waiver access.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Structure -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-title-wrap">
+        <div class="section-tag">Transparent Pricing</div>
+        <h2 class="section-title">Pick the Model that Fits Your Program</h2>
+        <p class="section-subtitle">
+          No percentage tax on your retreat tickets. Pay only for what you use, with full access to all features.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Tier 1: Per-Event Pass -->
+        <div class="pricing-card featured">
+          <div class="featured-badge">Launch Special · 100% Free Trial</div>
+          <div>
+            <h3 class="plan-name">Per-Event Pass</h3>
+            <p class="plan-target">Ideal for churches, schools, fellowships & groups organizing 1–2 retreats per year.</p>
+            
+            <div class="plan-price-wrap">
+              <span class="plan-price">$0</span>
+              <span class="plan-period">/ retreat event</span>
+            </div>
+            <div class="plan-special-tag">✨ Dev & Launch Trial ($0.00 — Regularly $79)</div>
+
+            <ul class="plan-features">
+              <li><span>✓</span> <strong>1 Dedicated Admin Workspace</strong> for your retreat</li>
+              <li><span>✓</span> <strong>Unlimited Attendees & Families</strong></li>
+              <li><span>✓</span> Dorm & Cabin Housing Matrix Engine</li>
+              <li><span>✓</span> Self-Check-in Kiosk & QR Badge Printing</li>
+              <li><span>✓</span> Branded Email Broadcasts with Merge Tags</li>
+              <li><span>✓</span> <strong>60-Day Post-Event Grace Window</strong></li>
+              <li><span>✓</span> <strong>1-Year Read-Only Historical Archive</strong></li>
+              <li><span>✓</span> Pre-Wired Stripe Payment Engine</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-primary plan-btn" onclick="openPricingPrompt('Per-Event Pass ($0.00 Free Trial)')">
+            🚀 Activate Event Pass (Free Trial)
+          </button>
+        </div>
+
+        <!-- Tier 2: Retreat Center Pro -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="plan-name">Retreat Center Pro</h3>
+            <p class="plan-target">For retreat centers, campgrounds, and conference facilities managing visiting groups year-round.</p>
+            
+            <div class="plan-price-wrap">
+              <span class="plan-price">$49</span>
+              <span class="plan-period">/ month (billed annually)</span>
+            </div>
+            <div class="plan-special-tag">🏢 Facility Multi-Group Management</div>
+
+            <ul class="plan-features">
+              <li><span>✓</span> <strong>Unlimited Retreat Events</strong> all year round</li>
+              <li><span>✓</span> Multi-Group Booking & Master Calendar</li>
+              <li><span>✓</span> Cabin & Room Turnover Roster Management</li>
+              <li><span>✓</span> Custom Facility Co-Branding Across All Groups</li>
+              <li><span>✓</span> Group Coordinator Invitation Links</li>
+              <li><span>✓</span> Permanent Historical Records & Exports</li>
+              <li><span>✓</span> Priority Hostinger & SMTP Onboarding Support</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-ghost plan-btn" onclick="openPricingPrompt('Retreat Center Pro ($49/mo)')">
+            🏢 Select Center Plan
+          </button>
+        </div>
+
+        <!-- Tier 3: Enterprise / Diocesan -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="plan-name">Network / Enterprise</h3>
+            <p class="plan-target">For school districts, dioceses, denominations, and multi-campus regional networks.</p>
+            
+            <div class="plan-price-wrap">
+              <span class="plan-price">Custom</span>
+              <span class="plan-period">/ tailored agreement</span>
+            </div>
+            <div class="plan-special-tag">🌐 Multi-Campus & Denominational</div>
+
+            <ul class="plan-features">
+              <li><span>✓</span> Unlimited Retreats across Multiple Branches</li>
+              <li><span>✓</span> Centralized Billing & Financial Consolidation</li>
+              <li><span>✓</span> Role-Based Sub-Administrators & Permissions</li>
+              <li><span>✓</span> Custom Domain & Dedicated SMTP Integration</li>
+              <li><span>✓</span> Custom Liability Waiver Workflows</li>
+              <li><span>✓</span> Dedicated Onboarding Account Manager</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-ghost plan-btn" onclick="openPricingPrompt('Network / Enterprise')">
+            💬 Talk to Our Team
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-title-wrap">
+        <div class="section-tag">Got Questions?</div>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Do retreat participants need to sign up for accounts?</h4>
+          <p>
+            No. There is zero friction for attendees. Only the retreat coordinator creates an admin account. Participants receive digital invoices, registration receipts, and QR check-in badges directly via email.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How long does access remain open after the retreat?</h4>
+          <p>
+            With our Per-Event Pass, you maintain full operational access for 60 days after your retreat concludes to finish financial reconciliations and send follow-up surveys. After that, your data remains accessible in a read-only archive for up to 1 full year.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How does payment processing work?</h4>
+          <p>
+            RetreatFlow is built to integrate seamlessly with Stripe. During our development and launch phase, you can activate your workspace immediately with zero charges ($0.00).
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Can we send customized emails with our group's name?</h4>
+          <p>
+            Yes! Every email sent through RetreatFlow dynamically displays your group or retreat title alongside the RetreatFlow verified header. You can also save bespoke email layouts as reusable templates.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Modal Prompt -->
+  <div class="modal-overlay" id="pricingModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      
+      <div class="modal-icon">✨</div>
+      <h3 class="modal-title">Ready to launch your retreat?</h3>
+      <p class="modal-subtitle">
+        You are one step away from creating your dedicated retreat operations workspace.
+      </p>
+
+      <div class="modal-plan-pill">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: #a5b4fc; font-weight: 700;">Selected Plan</div>
+          <strong id="modalPlanTitle">Per-Event Pass</strong>
+        </div>
+        <span id="modalPlanPrice">Instant Activation</span>
+      </div>
+
+      <div class="modal-options">
+        <a id="btnCreateAccount" href="http://localhost:3000/login" class="modal-opt-btn modal-opt-create">
+          📝 Create Admin Account & Start Free Trial →
+        </a>
+        <a id="btnSignIn" href="http://localhost:3000/login" class="modal-opt-btn modal-opt-login">
+          🔑 Already have an admin account? Sign In
+        </a>
+      </div>
+
+      <div style="margin-top: 18px; text-align: center; font-size: 11px; color: #64748b;">
+        🔒 Instant setup · Free development & launch tier · No credit card required
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 12px; font-weight: 600; color: #94a3b8;">
+        RetreatFlow — The Operating System for Retreats & Group Programs
+      </p>
+      <p style="margin-bottom: 16px;">
+        <a href="#features">Features</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="http://localhost:3000/login">Portal Login</a>
+      </p>
+      <p>© 2026 RetreatFlow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Configuration: Points to RetreatFlow Admin App URL
+    const APP_BASE_URL = window.location.origin.includes(":3000") 
+      ? window.location.origin + "/login" 
+      : "http://localhost:3000/login";
+
+    function openPricingPrompt(planName) {
+      const modal = document.getElementById('pricingModal');
+      const planTitle = document.getElementById('modalPlanTitle');
+      const planPrice = document.getElementById('modalPlanPrice');
+      const createBtn = document.getElementById('btnCreateAccount');
+      const signInBtn = document.getElementById('btnSignIn');
+
+      planTitle.textContent = planName;
+      if (planName.includes("Center")) {
+        planPrice.textContent = "$49/mo";
+      } else if (planName.includes("Enterprise")) {
+        planPrice.textContent = "Custom Quote";
+      } else {
+        planPrice.textContent = "$0.00 Free Trial";
+      }
+
+      // Set redirect links to RetreatFlow app
+      createBtn.href = APP_BASE_URL + "?mode=signup&plan=" + encodeURIComponent(planName);
+      signInBtn.href = APP_BASE_URL + "?mode=signin";
+
+      modal.classList.add('active');
+    }
+
+    function openLoginPrompt() {
+      window.location.href = APP_BASE_URL + "?mode=signin";
+    }
+
+    function closeModal() {
+      document.getElementById('pricingModal').classList.remove('active');
+    }
+
+    // Close modal on click outside
+    document.getElementById('pricingModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

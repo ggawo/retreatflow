@@ -1,0 +1,263 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth models
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id               String    @id @default(cuid())
+  name             String?
+  email            String?   @unique
+  password         String?
+  emailVerified    DateTime?
+  image            String?
+  organizationName String?
+  phone            String?
+  accounts         Account[]
+  sessions         Session[]
+  role             String    @default("USER") // USER or ADMIN
+  events           Event[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// RetreatFlow models
+model Event {
+  id                   String   @id @default(cuid())
+  userId               String?
+  name                 String
+  organizationName     String?  @default("My Organization")
+  organizationType     String?  @default("Church / Ministry")
+  planTier             String?  @default("PER_EVENT") // PER_EVENT, RETREAT_CENTER, FREE_DEV
+  billingStatus        String?  @default("ACTIVE") // ACTIVE, TRIAL, FREE_DEV, EXPIRED
+  billingPaidAt        DateTime?
+  expiresAt            DateTime?
+  date                 String
+  startDate            String?
+  endDate              String?
+  location             String
+  capacity             Int      @default(100)
+  registrationDeadline String
+  registrationMode     String   @default("PUBLIC_SELF") // PUBLIC_SELF or ADMIN_ONLY
+  slug                 String?  @unique
+  publicRegIntro       String?  @db.Text
+  requireWaiver        Boolean  @default(true)
+  requireAccessCode    Boolean  @default(true)
+  registrationAccessCode String?
+  pricePerAdult        Float    @default(120)
+  pricePerChild        Float    @default(60)
+  childAgeThreshold    Int      @default(12)
+  hasDownpayment       Boolean  @default(false)
+  downpaymentAmount    Float    @default(0)
+  downpaymentDueDate   String?
+  fullPaymentDueDate   String?
+  attendanceSessions   String?  @db.Text
+
+  user          User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  families      Family[]
+  buildings     Building[]
+  volunteers    Volunteer[]
+  schedule      Schedule[]
+  messages      Message[]
+  notifications Notification[]
+  emailTemplates EmailTemplate[]
+}
+
+model Family {
+  id          String   @id @default(cuid())
+  eventId     String?
+  name        String
+  leader      String
+  email       String
+  phone       String?
+  adults             Int      @default(0)
+  children           Int      @default(0)
+  nonPayingChildren  Int      @default(0)
+  roomPref           String?
+  access      String?
+  buddyRequest String?
+  dietary     String?  @db.Text
+  emergencyContact String?
+  status      String   @default("Pending")
+  notes       String?  @db.Text
+  roomId      String?
+  membersJson String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  event        Event?        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registration Registration?
+  room         Room?         @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  payments     Payment[]
+  attendance   Attendance[]
+}
+
+model Registration {
+  id           String   @id @default(cuid())
+  familyId     String   @unique
+  submitted    String
+  status       String   @default("Pending") // Confirmed, Pending, Waitlist
+  source       String
+  completeness Int      @default(0)
+  waiver       Boolean  @default(false)
+  balance      Float    @default(0)
+  note         String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  family       Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model Building {
+  id        String   @id @default(cuid())
+  eventId   String?
+  name      String
+
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rooms     Room[]
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  number      String
+  capacity    Int
+  accessible  Boolean  @default(false)
+  buildingId  String
+
+  building    Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  families    Family[]
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  familyId  String
+  amount    Float
+  status    String   // Paid, Partial, Overdue
+  due       String
+  method    String
+  createdAt DateTime @default(now())
+
+  family    Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model Volunteer {
+  id        String   @id @default(cuid())
+  eventId   String?
+  name      String
+  email     String?
+  role      String
+  shift     String
+  date      String
+  status    String   // Confirmed, Pending
+  skills    String?
+
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Schedule {
+  id        String   @id @default(cuid())
+  eventId   String?
+  day       String
+  start     String
+  end       String
+  title     String
+  location  String
+  team      String
+  status    String   // Ready, Draft
+
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id           String   @id @default(cuid())
+  familyId     String
+  checkin      String   @default("Pending") // Present, Pending, Absent
+  worship      String   @default("Pending")
+  dinner       String   @default("Pending")
+  sessionsJson String?  @db.Text
+
+  family    Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  eventId        String?
+  target         String
+  subject        String
+  body           String?  @db.Text
+  sent           String
+  status         String   @default("Sent") // Sent, Scheduled, Failed
+  recipientCount Int      @default(0)
+  recipientsJson String?  @db.Text
+  createdAt      DateTime @default(now())
+
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  eventId   String?
+  type      String   // warning, danger, info
+  title     String
+  detail    String
+  view      String
+
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  eventId     String?
+  name        String
+  category    String   @default("custom") // custom, announcement, reminder, logistics
+  subject     String
+  body        String   @db.Text
+  target      String   @default("All registered families")
+  buttonText  String?
+  buttonUrl   String?
+  calloutNote String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  event       Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
