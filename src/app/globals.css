@@ -1040,18 +1040,23 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 60px 48px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 56px 48px 40px;
   background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
   border-right: 1px solid #1e293b;
   min-width: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .login-auth-section {
   width: 560px;
   max-width: 560px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 40px 32px;
   background: #0f172a;
@@ -1151,6 +1156,9 @@ h1 {
 
   /* The marketing hero collapses below the login form on mobile screens */
   .login-hero-section {
+    position: static !important;
+    height: auto !important;
+    align-items: flex-start !important;
     padding: 36px 20px 48px !important;
     border-right: none !important;
     border-top: 1px solid #1e293b;

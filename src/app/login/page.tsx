@@ -256,7 +256,7 @@ export default function LoginPage() {
     <div className="login-page-container">
       {/* Left Landing Hero Section (Collapses below on mobile) */}
       <div className="login-hero-section">
-        <div style={{ maxWidth: "580px" }}>
+        <div style={{ width: "100%", maxWidth: "580px" }}>
           <div style={{ marginBottom: "24px" }}>
             <Logo size={64} textSize="36px" glow priority />
           </div>
@@ -728,65 +728,107 @@ export default function LoginPage() {
               <div style={{ fontWeight: "700", color: "#a5b4fc", fontSize: "13px", margin: "16px 0 6px" }}>
                 3. Registration Workflow Preference *
               </div>
-              <div className="reg-mode-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "8px" }}>
+              <div className="reg-mode-grid" style={{ display: "grid", gap: "10px", marginBottom: "8px" }}>
                 <div
                   onClick={() => setRegistrationMode("PUBLIC_SELF")}
                   style={{
-                    padding: "12px",
+                    padding: "14px 16px",
                     borderRadius: "10px",
                     border: `1.5px solid ${registrationMode === "PUBLIC_SELF" ? "#6366f1" : "#334155"}`,
                     background: registrationMode === "PUBLIC_SELF" ? "rgba(99, 102, 241, 0.14)" : "#1e293b",
                     cursor: "pointer",
                     boxShadow: registrationMode === "PUBLIC_SELF" ? "0 0 12px rgba(99, 102, 241, 0.25)" : "none",
-                    transition: "all 0.2s ease"
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "12px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                    <input
-                      type="radio"
-                      id="mode_public"
-                      name="registrationMode"
-                      checked={registrationMode === "PUBLIC_SELF"}
-                      onChange={() => setRegistrationMode("PUBLIC_SELF")}
-                      style={{ cursor: "pointer", accentColor: "#6366f1" }}
-                    />
-                    <label htmlFor="mode_public" style={{ fontSize: "13px", fontWeight: "700", color: "#fff", cursor: "pointer" }}>
+                  <input
+                    type="radio"
+                    id="mode_public"
+                    name="registrationMode"
+                    checked={registrationMode === "PUBLIC_SELF"}
+                    onChange={() => setRegistrationMode("PUBLIC_SELF")}
+                    style={{
+                      cursor: "pointer",
+                      accentColor: "#6366f1",
+                      marginTop: "3px",
+                      flexShrink: 0,
+                      width: "16px",
+                      height: "16px",
+                    }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <label
+                      htmlFor="mode_public"
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "700",
+                        color: "#fff",
+                        cursor: "pointer",
+                        display: "block",
+                        whiteSpace: "nowrap",
+                        marginBottom: "4px",
+                      }}
+                    >
                       🌐 Public Self-Registration
                     </label>
+                    <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8", lineHeight: "1.45" }}>
+                      Attendees self-register via a direct link. Auto fee calculation, dietary input & QR pass generation.
+                    </p>
                   </div>
-                  <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8", lineHeight: "1.4" }}>
-                    Attendees self-register via a direct link. Auto fee calculation, dietary input & QR pass generation.
-                  </p>
                 </div>
 
                 <div
                   onClick={() => setRegistrationMode("ADMIN_ONLY")}
                   style={{
-                    padding: "12px",
+                    padding: "14px 16px",
                     borderRadius: "10px",
                     border: `1.5px solid ${registrationMode === "ADMIN_ONLY" ? "#6366f1" : "#334155"}`,
                     background: registrationMode === "ADMIN_ONLY" ? "rgba(99, 102, 241, 0.14)" : "#1e293b",
                     cursor: "pointer",
                     boxShadow: registrationMode === "ADMIN_ONLY" ? "0 0 12px rgba(99, 102, 241, 0.25)" : "none",
-                    transition: "all 0.2s ease"
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "12px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                    <input
-                      type="radio"
-                      id="mode_admin"
-                      name="registrationMode"
-                      checked={registrationMode === "ADMIN_ONLY"}
-                      onChange={() => setRegistrationMode("ADMIN_ONLY")}
-                      style={{ cursor: "pointer", accentColor: "#6366f1" }}
-                    />
-                    <label htmlFor="mode_admin" style={{ fontSize: "13px", fontWeight: "700", color: "#fff", cursor: "pointer" }}>
+                  <input
+                    type="radio"
+                    id="mode_admin"
+                    name="registrationMode"
+                    checked={registrationMode === "ADMIN_ONLY"}
+                    onChange={() => setRegistrationMode("ADMIN_ONLY")}
+                    style={{
+                      cursor: "pointer",
+                      accentColor: "#6366f1",
+                      marginTop: "3px",
+                      flexShrink: 0,
+                      width: "16px",
+                      height: "16px",
+                    }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <label
+                      htmlFor="mode_admin"
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "700",
+                        color: "#fff",
+                        cursor: "pointer",
+                        display: "block",
+                        whiteSpace: "nowrap",
+                        marginBottom: "4px",
+                      }}
+                    >
                       🔒 Admin-Only Registration
                     </label>
+                    <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8", lineHeight: "1.45" }}>
+                      Organizers enter attendees manually or upload spreadsheets. Public registration link is closed.
+                    </p>
                   </div>
-                  <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8", lineHeight: "1.4" }}>
-                    Organizers enter attendees manually or upload spreadsheets. Public registration link is closed.
-                  </p>
                 </div>
               </div>
 
